@@ -1,0 +1,51 @@
+products:
+  - id: rolinho_galvalume
+    formare_product_name: Rolinho galvalume
+    category: rolinhos
+    material: aco galvalume
+    default_unit: kg
+    notes: Guardar espessura, largura, comprimento e acabamento.
+    active: true
+  - id: rolinho_galvanizado_zincado_fosco
+    formare_product_name: Rolinho galvanizado zincado fosco
+    category: rolinhos
+    material: aco galvanizado
+    default_unit: kg
+    notes: Separar acabamento fosco de brilhante.
+    active: true
+  - id: rolinho_galvanizado_zincado_brilhante
+    formare_product_name: Rolinho galvanizado zincado brilhante
+    category: rolinhos
+    material: aco galvanizado
+    default_unit: kg
+    notes: Separar acabamento brilhante de fosco.
+    active: true
+  - id: telha_termoacustica_sanduiche_trapezio
+    formare_product_name: Telha termoacustica sanduiche trapezio
+    category: telhas
+    material: aco + nucleo isolante
+    default_unit: m2
+    notes: Guardar nucleo, espessura das chapas, largura util e modelo.
+    active: true
+  - id: divisoria_gesso_drywall
+    formare_product_name: Divisoria de gesso drywall
+    category: drywall
+    material: gesso acartonado
+    default_unit: m2
+    notes: Pode aparecer como sistema completo, placa ou peca.
+    active: true
+  - id: perfil_montante_drywall
+    formare_product_name: Perfil montante drywall
+    category: drywall
+    material: aco galvanizado
+    default_unit: peca
+    notes: Guardar largura, comprimento, espessura e galvanizacao.
+    active: true
+  - id: perfil_guia_drywall
+    formare_product_name: Perfil guia drywall
+    category: drywall
+    material: aco galvanizado
+    default_unit: peca
+    notes: Guardar largura, comprimento, espessura e galvanizacao.
+    active: true
+

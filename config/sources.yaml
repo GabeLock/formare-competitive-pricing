@@ -1,0 +1,158 @@
+# config/sources.yaml
+# Fonte única de verdade sobre quem raspar, com qual prioridade regional,
+# e se a fonte é conhecida por ter (ou não) preço público.
+#
+# tier:
+#   regional_direto     -> concorrente direto em Grande BH / MG
+#   tecnico_referencia  -> concorrente técnico / referência nacional
+#   benchmark_publico   -> canal de e-commerce/marketplace com preço público, usado como benchmark
+#
+# price_type_expected:
+#   auto_scraped  -> já confirmado que expõe preço numérico publicamente
+#   manual_quote  -> já confirmado que só trabalha com "solicitar orçamento" (NÃO tentar raspar preço,
+#                    NÃO preencher formulário de contato automaticamente)
+#   unknown       -> ainda não verificado; o price_detector.py deve tentar detectar e classificar
+#                    na primeira execução
+
+competitors:
+
+  # ---------------------------------------------------------------
+  # TIER 1 — Concorrentes diretos regionais (Grande BH / MG)
+  # ---------------------------------------------------------------
+  - name: "Formare Metais"
+    tier: regional_direto
+    region: "Belo Horizonte/MG"
+    note: "Baseline própria — usada para registrar o custo interno de referência, não um concorrente"
+    price_type_expected: manual_quote
+    urls:
+      - category: rolinho_galvalume
+        url: "https://www.formaremetais.com.br/rolinho-galvanizado-galvalume"
+      - category: rolinho_zincado_fosco
+        url: "https://www.formaremetais.com.br/rolinho-galvanizado-zincado-fosco"
+      - category: rolinho_zincado_brilhante
+        url: "https://www.formaremetais.com.br/rolinho-galvanizado-zincado-brilhante"
+      - category: telha_termoacustica_sanduiche_trapezio
+        url: "https://www.formaremetais.com.br/telha-termoacustica-sanduiche-trapezio-natural"
+      - category: divisoria_drywall
+        url: "https://compre.formaremetais.com.br/perfil-drywall/"
+
+  - name: "Perfil Telhas"
+    tier: regional_direto
+    region: "Timóteo/MG (filial Grande BH, Manhuaçu, João Monlevade, São Joaquim de Bicas)"
+    price_type_expected: manual_quote
+    urls:
+      - category: geral
+        url: "https://www.perfiltelhas.com.br/"
+
+  - name: "Galvaminas"
+    tier: regional_direto
+    region: "MG"
+    price_type_expected: unknown
+    urls:
+      - category: telha_termoacustica_sanduiche_trapezio
+        url: "https://galvaminas.com.br/produto/telha-sanduiche/"
+
+  - name: "Telhas Barreiro"
+    tier: regional_direto
+    region: "MG"
+    price_type_expected: unknown
+    urls:
+      - category: geral
+        url: "https://telhasbarreiro.com.br/index"
+
+  - name: "Suri Metais"
+    tier: regional_direto
+    region: "Pouso Alegre/MG"
+    price_type_expected: manual_quote
+    urls:
+      - category: telha_termoacustica_sanduiche_trapezio
+        url: "https://www.surimetais.com.br/telha-sanduiche-preco"
+      - category: divisoria_drywall
+        url: "https://www.surimetais.com.br/valor-do-perfil-drywall"
+
+  # ---------------------------------------------------------------
+  # TIER 2 — Concorrentes / referências técnicas
+  # ---------------------------------------------------------------
+  - name: "Açotel"
+    tier: tecnico_referencia
+    region: "Nacional"
+    price_type_expected: unknown
+    urls:
+      - category: rolinho_galvalume
+        url: "https://acotel.com.br/categoria-produto/rolinhos/"
+
+  - name: "Ananda Metais"
+    tier: tecnico_referencia
+    region: "Piracicaba/SP + planta Extrema/MG"
+    price_type_expected: manual_quote
+    urls:
+      - category: perfil_montante
+        url: "https://anandametais.com.br/produtos/drywall-3"
+      - category: perfil_guia
+        url: "https://anandametais.com.br/produtos/drywall-3"
+
+  - name: "Multiperfil"
+    tier: tecnico_referencia
+    region: "Nacional"
+    price_type_expected: unknown
+    urls:
+      - category: divisoria_drywall
+        url: "https://multiperfil.com.br/"
+
+  # ---------------------------------------------------------------
+  # TIER 3 — Canais com preço público confirmado (benchmark de mercado)
+  # ---------------------------------------------------------------
+  - name: "Gravia"
+    tier: benchmark_publico
+    region: "Nacional (Brasília/DF)"
+    price_type_expected: auto_scraped
+    platform: vtex
+    urls:
+      - category: rolinho_galvalume
+        url: "https://www.gravia.com/Chapas/Bobininhas"
+      - category: telha_termoacustica_sanduiche_trapezio
+        url: "https://www.gravia.com/Telhas-e-Cumeeiras/Telhas-termicas"
+      - category: perfil_montante
+        url: "https://www.gravia.com/Drywall/Montantes"
+      - category: perfil_guia
+        url: "https://www.gravia.com/Drywall/Guias"
+
+  - name: "Telhas Online (CBS)"
+    tier: benchmark_publico
+    region: "Nacional"
+    price_type_expected: auto_scraped
+    urls:
+      - category: telha_termoacustica_sanduiche_trapezio
+        url: "https://www.telhas.online/telhas-sanduiche-termicas"
+
+  - name: "Grupo Pizzinatto"
+    tier: benchmark_publico
+    region: "Piracicaba/SP (venda nacional)"
+    price_type_expected: auto_scraped
+    urls:
+      - category: telha_termoacustica_sanduiche_trapezio
+        url: "https://loja.pizzinatto.com.br/telhas/telhas1/telhas-termoacusticas/"
+
+  - name: "Servicorte"
+    tier: benchmark_publico
+    region: "Nacional"
+    price_type_expected: unknown
+    urls:
+      - category: rolinho_galvalume
+        url: "https://loja.servicorte.com.br/revestidos/bobina-galvalume-az150-0-43-x-1200-00-mm"
+
+  - name: "Mercado Livre"
+    tier: benchmark_publico
+    region: "Nacional (múltiplos vendedores)"
+    price_type_expected: auto_scraped
+    platform: mercadolivre_api
+    urls:
+      - category: rolinho_galvalume
+        query: "rolinho galvalume 0,43"
+      - category: rolinho_zincado_fosco
+        query: "rolo chapa galvanizada fosca"
+      - category: rolinho_zincado_brilhante
+        query: "chapa galvanizada brilhante rolo"
+
+  # Google Shopping foi deixado FORA da automação (ver README) por questões de
+  # Termos de Serviço do Google — usar apenas como link de referência manual.

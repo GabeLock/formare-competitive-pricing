@@ -1,0 +1,200 @@
+competitors:
+  - id: formare_metais
+    name: Formare Metais
+    website: https://www.formaremetais.com.br/
+    tier: regional_direto
+    region: Belo Horizonte/MG
+    notes: Baseline propria, nao concorrente; usado para custos e tabela interna.
+    active: true
+    urls:
+      - product_id: rolinho_galvalume
+        url: https://www.formaremetais.com.br/rolinho-galvanizado-galvalume
+        url_type: product
+        collection_method: quote_probe
+        source_type: quote_required
+        active: true
+      - product_id: telha_termoacustica_sanduiche_trapezio
+        url: https://www.formaremetais.com.br/telha-termoacustica-sanduiche-trapezio-natural
+        url_type: product
+        collection_method: quote_probe
+        source_type: quote_required
+        active: true
+  - id: perfil_telhas
+    name: Perfil Telhas
+    website: https://www.perfiltelhas.com.br/
+    tier: regional_direto
+    region: Timoteo/MG e Grande BH
+    notes: Confirmado como modelo faca seu orcamento.
+    active: true
+    urls:
+      - product_id: telha_termoacustica_sanduiche_trapezio
+        url: https://www.perfiltelhas.com.br/
+        url_type: category
+        collection_method: quote_probe
+        source_type: quote_required
+        active: true
+  - id: galvaminas
+    name: Galvaminas
+    website: https://galvaminas.com.br/
+    tier: regional_direto
+    region: Minas Gerais
+    notes: Status de preco publico a verificar automaticamente.
+    active: true
+    urls:
+      - product_id: telha_termoacustica_sanduiche_trapezio
+        url: https://galvaminas.com.br/produto/telha-sanduiche/
+        url_type: product
+        collection_method: html
+        source_type: public_price
+        active: true
+  - id: telhas_barreiro
+    name: Telhas Barreiro
+    website: https://telhasbarreiro.com.br/index
+    tier: regional_direto
+    region: Belo Horizonte/MG
+    notes: Status de preco publico a verificar automaticamente.
+    active: true
+    urls:
+      - product_id: telha_termoacustica_sanduiche_trapezio
+        url: https://telhasbarreiro.com.br/index
+        url_type: category
+        collection_method: html
+        source_type: public_price
+        active: true
+  - id: suri_metais
+    name: Suri Metais
+    website: https://www.surimetais.com.br/
+    tier: regional_direto
+    region: Pouso Alegre/MG
+    notes: Confirmado como solicite orcamento.
+    active: true
+    urls:
+      - product_id: telha_termoacustica_sanduiche_trapezio
+        url: https://www.surimetais.com.br/telha-sanduiche-preco
+        url_type: product
+        collection_method: quote_probe
+        source_type: quote_required
+        active: true
+      - product_id: perfil_montante_drywall
+        url: https://www.surimetais.com.br/valor-do-perfil-drywall
+        url_type: product
+        collection_method: quote_probe
+        source_type: quote_required
+        active: true
+  - id: acotel
+    name: Acotel
+    website: https://acotel.com.br/
+    tier: tecnico_referencia
+    region: Nacional
+    notes: Referencia tecnica de rolinhos.
+    active: true
+    urls:
+      - product_id: rolinho_galvalume
+        url: https://acotel.com.br/categoria-produto/rolinhos/
+        url_type: category
+        collection_method: html
+        source_type: public_price
+        active: true
+  - id: ananda_metais
+    name: Ananda Metais
+    website: https://anandametais.com.br/
+    tier: tecnico_referencia
+    region: Piracicaba/SP e Extrema/MG
+    notes: Comercializacao via representantes; tratar como quote_required por padrao.
+    active: true
+    urls:
+      - product_id: perfil_montante_drywall
+        url: https://anandametais.com.br/produtos/drywall-3
+        url_type: category
+        collection_method: quote_probe
+        source_type: quote_required
+        active: true
+      - product_id: perfil_guia_drywall
+        url: https://anandametais.com.br/produtos/drywall-3
+        url_type: category
+        collection_method: quote_probe
+        source_type: quote_required
+        active: true
+  - id: multiperfil
+    name: Multiperfil
+    website: https://multiperfil.com.br/
+    tier: tecnico_referencia
+    region: Nacional
+    notes: Status de preco publico a verificar automaticamente.
+    active: true
+    urls:
+      - product_id: divisoria_gesso_drywall
+        url: https://multiperfil.com.br/
+        url_type: category
+        collection_method: html
+        source_type: public_price
+        active: true
+  - id: telhas_online
+    name: Telhas Online / Fenix Acos
+    website: https://www.telhas.online/
+    tier: benchmark_publico
+    region: Nacional
+    notes: Canal de referencia com preco publico.
+    active: true
+    urls:
+      - product_id: telha_termoacustica_sanduiche_trapezio
+        url: https://www.telhas.online/telhas-sanduiche-termicas
+        url_type: category
+        collection_method: html
+        source_type: marketplace
+        active: true
+  - id: grupo_pizzinatto
+    name: Grupo Pizzinatto
+    website: https://loja.pizzinatto.com.br/
+    tier: benchmark_publico
+    region: Piracicaba/SP
+    notes: Loja propria com preco publico plausivel.
+    active: true
+    urls:
+      - product_id: telha_termoacustica_sanduiche_trapezio
+        url: https://loja.pizzinatto.com.br/telhas/telhas1/telhas-termoacusticas/
+        url_type: category
+        collection_method: html
+        source_type: marketplace
+        active: true
+  - id: servicorte
+    name: Servicorte
+    website: https://loja.servicorte.com.br/
+    tier: benchmark_publico
+    region: Nacional
+    notes: Status de preco publico a confirmar.
+    active: true
+    urls:
+      - product_id: rolinho_galvalume
+        url: https://loja.servicorte.com.br/revestidos/bobina-galvalume-az150-0-43-x-1200-00-mm
+        url_type: product
+        collection_method: html
+        source_type: marketplace
+        active: true
+  - id: mercado_livre
+    name: Mercado Livre
+    website: https://www.mercadolivre.com.br/
+    tier: benchmark_publico
+    region: Nacional
+    notes: Usar API publica oficial; nunca raspar HTML da busca.
+    active: true
+    urls:
+      - product_id: rolinho_galvalume
+        query: rolinho galvalume 0,43
+        url_type: api_search
+        collection_method: mercado_livre_api
+        source_type: marketplace
+        active: true
+      - product_id: rolinho_galvanizado_zincado_fosco
+        query: rolo chapa galvanizada fosca
+        url_type: api_search
+        collection_method: mercado_livre_api
+        source_type: marketplace
+        active: true
+      - product_id: perfil_montante_drywall
+        query: perfil montante drywall 70mm 3m
+        url_type: api_search
+        collection_method: mercado_livre_api
+        source_type: marketplace
+        active: true
+
