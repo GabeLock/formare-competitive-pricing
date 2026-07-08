@@ -19,6 +19,7 @@ fig = px.line(
     x="collected_at",
     y="parsed_price",
     color="competitor_name",
+    line_dash="customer_segment",
     facet_col="formare_product_name",
     markers=True,
 )
@@ -27,4 +28,3 @@ st.plotly_chart(fig, use_container_width=True)
 priced = priced.sort_values(["item_hash", "collected_at"]).copy()
 priced["media_movel_7"] = priced.groupby("item_hash")["parsed_price"].transform(lambda s: s.rolling(7, min_periods=1).mean())
 st.dataframe(priced, use_container_width=True, hide_index=True)
-

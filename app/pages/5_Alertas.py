@@ -24,6 +24,7 @@ else:
                 "formare_product_name",
                 "competitor_name",
                 "tier",
+                "customer_segment",
                 "collection_status",
                 "source_type",
                 "notes",
@@ -33,4 +34,3 @@ else:
         use_container_width=True,
         hide_index=True,
     )
-

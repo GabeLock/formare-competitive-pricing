@@ -88,6 +88,11 @@ Tabelas principais:
 Datas sao gravadas em UTC. O dashboard converte a exibicao para o contexto local
 quando necessario.
 
+`price_observations.customer_segment` separa o mercado em:
+
+- `b2b_atacado`: referencia competitiva usada em minimo de mercado, media B2B e risco comercial.
+- `b2c_varejo`: teto de mercado informativo. Aparece separado no dashboard e nunca entra na mesma media B2B.
+
 ## Cotacoes manuais
 
 Fontes `quote_required` apenas confirmam que a pagina publica esta no ar. O
@@ -104,7 +109,7 @@ Isso separa preco publico, preco cotado manualmente e preco simulado.
 - -15 se o match de produto foi fuzzy
 - -10 se snapshot estiver desatualizado
 
-`risco_comercial`:
+`risco_comercial` usa somente precos `b2b_atacado` como referencia competitiva:
 
 ```text
 0.30 * gap_vs_menor_preco
@@ -116,6 +121,9 @@ Isso separa preco publico, preco cotado manualmente e preco simulado.
 ```
 
 Classificacao: 0-25 Baixo, 26-50 Moderado, 51-75 Alto, 76-100 Critico.
+
+Precos `b2c_varejo` sao exibidos como teto varejo separado para leitura comercial,
+sem compor o menor preco competitivo nem a media B2B.
 
 ## GitHub Actions
 

@@ -49,6 +49,7 @@ class MonitoredUrl(Base):
     url_type: Mapped[str | None] = mapped_column(String(80))
     collection_method: Mapped[str] = mapped_column(String(80), nullable=False)
     source_type: Mapped[str] = mapped_column(String(80), nullable=False)
+    customer_segment: Mapped[str] = mapped_column(String(40), default="b2b_atacado", nullable=False)
     active: Mapped[bool] = mapped_column(Boolean, default=True)
     notes: Mapped[str | None] = mapped_column(Text)
 
@@ -105,6 +106,7 @@ class PriceObservation(Base):
     notes: Mapped[str | None] = mapped_column(Text)
     collection_status: Mapped[str] = mapped_column(String(40), index=True)
     source_type: Mapped[str] = mapped_column(String(80), index=True)
+    customer_segment: Mapped[str] = mapped_column(String(40), default="b2b_atacado", index=True)
     confidence_score: Mapped[int] = mapped_column(Integer)
     item_hash: Mapped[str] = mapped_column(String(80), index=True)
     technical_specs_json: Mapped[str | None] = mapped_column(Text)
@@ -143,4 +145,3 @@ class Alert(Base):
     severity: Mapped[str] = mapped_column(String(40))
     message: Mapped[str] = mapped_column(Text)
     resolved: Mapped[bool] = mapped_column(Boolean, default=False)
-

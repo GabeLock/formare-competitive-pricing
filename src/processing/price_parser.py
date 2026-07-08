@@ -7,7 +7,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field, field_validator
 
 from src.analytics.scoring import confidence_score
-from src.config.settings import COLLECTION_STATUSES, SOURCE_TYPES
+from src.config.settings import COLLECTION_STATUSES, CUSTOMER_SEGMENTS, SOURCE_TYPES
 from src.processing.matcher import build_item_hash
 from src.processing.normalizer import normalize_price
 
@@ -77,6 +77,7 @@ class PriceObservationIn(BaseModel):
     notes: str | None = None
     collection_status: str = "success"
     source_type: str = "public_price"
+    customer_segment: Literal["b2b_atacado", "b2c_varejo"] = "b2b_atacado"
     confidence_score: int | None = None
     item_hash: str | None = None
     technical_specs: dict[str, Any] = Field(default_factory=dict)
@@ -98,6 +99,13 @@ class PriceObservationIn(BaseModel):
     def validate_source_type(cls, value: str) -> str:
         if value not in SOURCE_TYPES:
             raise ValueError(f"invalid source_type: {value}")
+        return value
+
+    @field_validator("customer_segment")
+    @classmethod
+    def validate_customer_segment(cls, value: str) -> str:
+        if value not in CUSTOMER_SEGMENTS:
+            raise ValueError(f"invalid customer_segment: {value}")
         return value
 
     @field_validator("parsed_price", "normalized_price", "cash_price", "pix_price", "installment_price")
@@ -143,4 +151,3 @@ class PriceObservationIn(BaseModel):
             data.source_type = "estimated_price"
             data.confidence_score = min(data.confidence_score or 20, 20)
         return data
-

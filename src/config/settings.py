@@ -37,9 +37,13 @@ SOURCE_TYPES = {
     "estimated_price",
 }
 
+CUSTOMER_SEGMENTS = {
+    "b2b_atacado",
+    "b2c_varejo",
+}
+
 TIERS = {
     "regional_direto": 0,
     "tecnico_referencia": 1,
     "benchmark_publico": 2,
 }
-

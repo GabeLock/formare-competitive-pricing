@@ -45,8 +45,8 @@ class GenericHtmlCollector(BaseCollector):
                 raw_unit="peca",
                 collection_status="success",
                 source_type=context.source_type,
+                customer_segment=context.customer_segment,
                 used_regex_fallback=True,
                 unit_assumed=True,
             ).finalized()
         ]
-

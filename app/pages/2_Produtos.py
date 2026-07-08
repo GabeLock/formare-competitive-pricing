@@ -19,6 +19,7 @@ st.dataframe(
             "raw_product_name",
             "competitor_name",
             "tier",
+            "customer_segment",
             "parsed_price",
             "raw_price",
             "raw_unit",
@@ -33,4 +34,3 @@ st.dataframe(
     use_container_width=True,
     hide_index=True,
 )
-

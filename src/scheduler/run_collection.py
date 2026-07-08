@@ -41,6 +41,7 @@ def _context(competitor, product, monitored_url) -> SourceContext:
         url=url,
         query=monitored_url.query,
         source_type=monitored_url.source_type,
+        customer_segment=monitored_url.customer_segment,
         collection_method=monitored_url.collection_method,
     )
 
@@ -66,6 +67,7 @@ def simulated_fallback(context: SourceContext) -> PriceObservationIn:
         raw_unit="peca",
         collection_status="success",
         source_type="estimated_price",
+        customer_segment=context.customer_segment,
         confidence_score=20,
         simulated=True,
         notes="Gerado apenas porque --allow-simulated-fallback foi informado.",
@@ -100,6 +102,7 @@ def collect(
                         url=context.url,
                         collection_status="error",
                         source_type=context.source_type,
+                        customer_segment=context.customer_segment,
                         notes=f"Falha isolada no pipeline: {exc}",
                     ).finalized()
                 ]
@@ -127,4 +130,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

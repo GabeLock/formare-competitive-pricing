@@ -35,4 +35,17 @@ def test_observation_finalized_adds_hash_and_confidence():
     assert obs.parsed_price == 10.0
     assert obs.item_hash
     assert obs.confidence_score == 100
+    assert obs.customer_segment == "b2b_atacado"
 
+
+def test_observation_accepts_b2c_segment():
+    obs = PriceObservationIn(
+        competitor_id="c",
+        competitor_name="C",
+        tier="benchmark_publico",
+        product_id="p",
+        url="https://example.com",
+        parsed_price=99,
+        customer_segment="b2c_varejo",
+    )
+    assert obs.customer_segment == "b2c_varejo"

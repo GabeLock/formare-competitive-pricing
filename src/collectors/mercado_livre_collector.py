@@ -45,6 +45,7 @@ class MercadoLivreCollector(BaseCollector):
                     availability=f"Quantidade disponivel: {item.get('available_quantity')}",
                     collection_status="success",
                     source_type="marketplace",
+                    customer_segment=context.customer_segment,
                     unit_assumed=True,
                 ).finalized()
             )
@@ -58,4 +59,3 @@ class MercadoLivreCollector(BaseCollector):
                 )
             )
         return observations
-

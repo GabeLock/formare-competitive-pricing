@@ -40,6 +40,7 @@ class SourceContext:
     url: str
     query: str | None
     source_type: str
+    customer_segment: str
     collection_method: str
 
 
@@ -119,9 +120,9 @@ class BaseCollector:
             url=context.url,
             collection_status=collection_status,
             source_type=source_type or context.source_type,
+            customer_segment=context.customer_segment,
             notes=notes,
         ).finalized()
 
     def collect(self, context: SourceContext) -> list[PriceObservationIn]:
         raise NotImplementedError
-

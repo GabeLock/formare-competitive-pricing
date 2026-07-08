@@ -56,6 +56,7 @@ def seed_reference_data(session: Session) -> None:
                     url_type=url_item.get("url_type"),
                     collection_method=url_item["collection_method"],
                     source_type=url_item["source_type"],
+                    customer_segment=url_item.get("customer_segment", "b2b_atacado"),
                     active=bool(url_item.get("active", True)),
                     notes=url_item.get("notes"),
                 )
@@ -129,6 +130,7 @@ def save_observations(session: Session, observations: Iterable[PriceObservationI
                 notes=item.notes,
                 collection_status=item.collection_status,
                 source_type=item.source_type,
+                customer_segment=item.customer_segment,
                 confidence_score=item.confidence_score or 0,
                 item_hash=item.item_hash or "",
                 technical_specs_json=json.dumps(item.technical_specs, ensure_ascii=True, default=str),
@@ -206,6 +208,7 @@ def save_manual_quote(
     url: str,
     price: float,
     raw_unit: str,
+    customer_segment: str = "b2b_atacado",
     notes: str | None = None,
 ) -> None:
     observation = PriceObservationIn(
@@ -221,6 +224,7 @@ def save_manual_quote(
         raw_unit=raw_unit,
         collection_status="success",
         source_type="manual_quote",
+        customer_segment=customer_segment,
         notes=notes,
     )
     save_observations(session, [observation])
@@ -233,4 +237,3 @@ def save_alerts(session: Session, alerts: Iterable[dict]) -> int:
         count += 1
     session.commit()
     return count
-

@@ -6,6 +6,7 @@ import pandas as pd
 import streamlit as st
 
 from src.analytics.cmv_analysis import contribution_margin, gross_margin
+from src.analytics.market_segments import B2B_SEGMENT, B2C_SEGMENT, b2b_competitive_reference, b2c_retail_ceiling
 from src.analytics.scoring import classify_commercial_position, classify_risk, commercial_risk
 from src.database.connection import SessionLocal
 from src.database.repository import save_manual_quote, upsert_formare_cost
@@ -59,29 +60,68 @@ with st.form("manual_quote"):
         selected = st.selectbox("Fonte", labels.index.tolist(), format_func=lambda i: labels.loc[i, "label"])
     price = st.number_input("Preco cotado", min_value=0.0, step=0.01, key="manual_price")
     raw_unit = st.selectbox("Unidade", ["peca", "m", "m2", "kg", "rolo"])
+    customer_segment = st.selectbox("Segmento da cotacao", [B2B_SEGMENT, B2C_SEGMENT])
     quote_notes = st.text_input("Condicao/prazo/observacao")
     if st.form_submit_button("Salvar cotacao manual") and selected is not None:
         row = labels.loc[selected]
         with SessionLocal() as session:
-            save_manual_quote(session, row["competitor_id"], row["competitor_name"], row["tier"], row["product_id"], row["category"], row["url"], price, raw_unit, quote_notes)
+            save_manual_quote(
+                session,
+                row["competitor_id"],
+                row["competitor_name"],
+                row["tier"],
+                row["product_id"],
+                row["category"],
+                row["url"],
+                price,
+                raw_unit,
+                customer_segment,
+                quote_notes,
+            )
         st.success("Cotacao manual salva no SQLite.")
         st.cache_data.clear()
 
-st.subheader("Risco comercial")
+st.subheader("Risco comercial - referencia competitiva B2B")
 priced = observations.dropna(subset=["parsed_price"]) if not observations.empty else pd.DataFrame()
-if priced.empty:
-    st.info("Sem precos numericos para risco.")
+b2b_priced = priced[priced["customer_segment"] == B2B_SEGMENT] if not priced.empty else pd.DataFrame()
+b2c_priced = priced[priced["customer_segment"] == B2C_SEGMENT] if not priced.empty else pd.DataFrame()
+if b2b_priced.empty:
+    st.info("Sem precos B2B atacado para calcular menor preco competitivo e risco comercial.")
 else:
-    lowest = priced.groupby("product_id")["parsed_price"].min().rename("menor_preco_mercado")
-    risk_df = priced.merge(lowest, on="product_id", how="left")
+    b2b_reference = b2b_competitive_reference(priced)
+    b2c_ceiling = b2c_retail_ceiling(priced)
+    risk_df = b2b_priced.merge(b2b_reference, on="product_id", how="left").merge(b2c_ceiling, on="product_id", how="left")
     risk_df["risco"] = risk_df.apply(
-        lambda r: commercial_risk(r.get("parsed_price"), r.get("menor_preco_mercado"), confidence=r.get("confidence_score", 100), tier=r.get("tier")),
+        lambda r: commercial_risk(r.get("parsed_price"), r.get("menor_preco_b2b"), confidence=r.get("confidence_score", 100), tier=r.get("tier")),
         axis=1,
     )
     risk_df["classificacao_risco"] = risk_df["risco"].apply(classify_risk)
     st.dataframe(
-        risk_df[["formare_product_name", "competitor_name", "tier", "parsed_price", "menor_preco_mercado", "risco", "classificacao_risco"]].sort_values("risco", ascending=False),
+        risk_df[
+            [
+                "formare_product_name",
+                "competitor_name",
+                "tier",
+                "customer_segment",
+                "parsed_price",
+                "menor_preco_b2b",
+                "media_b2b",
+                "teto_b2c_varejo",
+                "risco",
+                "classificacao_risco",
+            ]
+        ].sort_values("risco", ascending=False),
         use_container_width=True,
         hide_index=True,
     )
 
+st.subheader("B2C varejo - teto informativo separado")
+if b2c_priced.empty:
+    st.info("Sem precos B2C varejo numericos.")
+else:
+    b2c_summary = b2c_retail_ceiling(priced).merge(products[["id", "formare_product_name"]], left_on="product_id", right_on="id", how="left")
+    st.dataframe(
+        b2c_summary[["formare_product_name", "teto_b2c_varejo", "media_b2c_varejo"]],
+        use_container_width=True,
+        hide_index=True,
+    )

@@ -36,6 +36,8 @@ def load_all() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, 
         )
         observations["tier_order"] = observations["tier"].map(TIERS).fillna(9)
         observations = observations.sort_values(["tier_order", "collected_at"], ascending=[True, False])
+        if "customer_segment" not in observations:
+            observations["customer_segment"] = "b2b_atacado"
     return observations, competitors, products, costs, alerts
 
 
@@ -61,9 +63,14 @@ def sidebar_filters(df: pd.DataFrame) -> pd.DataFrame:
             sorted(df["collection_status"].dropna().unique()),
             default=sorted(df["collection_status"].dropna().unique()),
         )
+        segments = st.multiselect(
+            "Segmento",
+            sorted(df["customer_segment"].dropna().unique()),
+            default=sorted(df["customer_segment"].dropna().unique()),
+        )
     return df[
         df["tier"].isin(tiers)
         & df["formare_product_name"].isin(products)
         & df["collection_status"].isin(statuses)
+        & df["customer_segment"].isin(segments)
     ]
-

@@ -23,6 +23,7 @@ st.dataframe(
             "formare_product_name",
             "competitor_name",
             "tier",
+            "customer_segment",
             "collection_status",
             "source_type",
             "parsed_price",
@@ -33,4 +34,3 @@ st.dataframe(
     use_container_width=True,
     hide_index=True,
 )
-
