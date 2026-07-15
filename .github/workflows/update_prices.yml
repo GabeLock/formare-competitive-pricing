@@ -2,8 +2,8 @@ name: Update prices
 
 on:
   schedule:
-    # Alvo: a cada 30 minutos; o GitHub Actions pode iniciar com atraso.
-    - cron: "7,37 * * * *"
+    # A cada 30 minutos, em dias uteis. Inclui obrigatoriamente a janela matinal.
+    - cron: "7,37 * * * 1-5"
   workflow_dispatch:
 
 permissions:
@@ -38,6 +38,7 @@ jobs:
         env:
           FORMARE_BOT_CONTACT_EMAIL: ${{ vars.FORMARE_BOT_CONTACT_EMAIL || 'pricing@example.com' }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          MERCADOLIVRE_ACCESS_TOKEN: ${{ secrets.MERCADOLIVRE_ACCESS_TOKEN }}
           FORMARE_ENVIRONMENT: production
 
       - name: Upload logs

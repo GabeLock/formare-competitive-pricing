@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -83,6 +84,19 @@ def brl(value) -> str:
     if pd.isna(value):
         return "-"
     return f"R$ {float(value):,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def freshness_status(observed_at: pd.Timestamp | None) -> tuple[str, str]:
+    if observed_at is None or pd.isna(observed_at):
+        return "Indisponivel", "Nenhuma coleta valida foi registrada."
+    age = datetime.now(timezone.utc) - observed_at.to_pydatetime()
+    if age.total_seconds() <= 3600:
+        return "Atualizado", "Dados com menos de 1 hora."
+    if age.total_seconds() <= 6 * 3600:
+        return "Atencao", "Dados entre 1 e 6 horas."
+    if age.total_seconds() <= 24 * 3600:
+        return "Desatualizado", "Dados entre 6 e 24 horas."
+    return "Critico", "A ultima coleta valida tem mais de 24 horas."
 
 
 def sidebar_filters(df: pd.DataFrame) -> pd.DataFrame:

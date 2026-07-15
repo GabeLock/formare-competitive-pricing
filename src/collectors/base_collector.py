@@ -38,6 +38,7 @@ class SourceContext:
     product_id: str
     category: str | None
     url: str
+    url_type: str | None
     query: str | None
     source_type: str
     customer_segment: str

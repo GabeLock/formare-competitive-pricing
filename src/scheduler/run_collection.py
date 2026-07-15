@@ -39,6 +39,7 @@ def _context(competitor, product, monitored_url) -> SourceContext:
         product_id=product.id,
         category=product.category,
         url=url,
+        url_type=monitored_url.url_type,
         query=monitored_url.query,
         source_type=monitored_url.source_type,
         customer_segment=monitored_url.customer_segment,
@@ -120,7 +121,7 @@ def collect(
 
 def run_local_scheduler() -> None:
     scheduler = BlockingScheduler(timezone="America/Sao_Paulo")
-    scheduler.add_job(collect, "cron", hour="8,17", minute=0)
+    scheduler.add_job(collect, "cron", day_of_week="mon-fri", hour="8-18", minute="7,37")
     scheduler.start()
 
 

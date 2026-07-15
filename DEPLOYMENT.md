@@ -13,6 +13,11 @@ executa somente a coleta; o Streamlit faz somente leitura e nunca dispara scrapi
 4. Em GitHub > Settings > Secrets and variables > Actions, crie o segredo
    `DATABASE_URL` com a mesma connection string. Nunca use a chave anonima no
    coletor ou no dashboard.
+5. Se a API publica do Mercado Livre responder HTTP 403, crie um aplicativo na
+   plataforma de desenvolvedores do Mercado Livre e cadastre o token OAuth como
+   `MERCADOLIVRE_ACCESS_TOKEN` nos GitHub Secrets. O dashboard nao recebe esse
+   token: ele somente le o banco. Sem token valido, a fonte fica marcada como
+   bloqueada e nao produz preco.
 
 ## 2. Coleta automatica
 

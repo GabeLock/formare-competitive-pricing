@@ -103,6 +103,64 @@ competitors:
         source_type: public_price
         customer_segment: b2b_atacado
         active: true
+      - product_id: rolinho_galvanizado_zincado_fosco
+        url: https://acotel.com.br/categoria-produto/rolinhos/
+        url_type: category
+        collection_method: html
+        source_type: public_price
+        customer_segment: b2b_atacado
+        active: true
+      - product_id: rolinho_galvanizado_zincado_brilhante
+        url: https://acotel.com.br/categoria-produto/rolinhos/
+        url_type: category
+        collection_method: html
+        source_type: public_price
+        customer_segment: b2b_atacado
+        active: true
+  - id: espaco_smart
+    name: Espaco Smart
+    website: https://www.espacosmart.com.br/
+    tier: tecnico_referencia
+    region: Nacional
+    notes: Varejista especializado; validar especificacao antes de comparar perfis.
+    active: true
+    urls:
+      - product_id: divisoria_gesso_drywall
+        url: https://www.espacosmart.com.br/placa-de-gesso-drywall-st-12-5-x-1200-x-2400mm/p
+        url_type: product
+        collection_method: html
+        source_type: public_price
+        customer_segment: b2c_varejo
+        active: true
+      - product_id: perfil_montante_drywall
+        url: https://www.espacosmart.com.br/drywall/perfis-de-drywall
+        url_type: category
+        collection_method: html
+        source_type: public_price
+        customer_segment: b2c_varejo
+        active: true
+      - product_id: perfil_guia_drywall
+        url: https://www.espacosmart.com.br/drywall/perfis-de-drywall
+        url_type: category
+        collection_method: html
+        source_type: public_price
+        customer_segment: b2c_varejo
+        active: true
+  - id: leroy_merlin
+    name: Leroy Merlin
+    website: https://www.leroymerlin.com.br/
+    tier: benchmark_publico
+    region: Nacional
+    notes: Varejo de referencia; nao compor ranking B2B.
+    active: true
+    urls:
+      - product_id: divisoria_gesso_drywall
+        url: https://www.leroymerlin.com.br/chapas-de-drywall
+        url_type: category
+        collection_method: html
+        source_type: public_price
+        customer_segment: b2c_varejo
+        active: true
   - id: ananda_metais
     name: Ananda Metais
     website: https://anandametais.com.br/
@@ -202,6 +260,34 @@ competitors:
         active: true
       - product_id: rolinho_galvanizado_zincado_fosco
         query: rolo chapa galvanizada fosca
+        url_type: api_search
+        collection_method: mercado_livre_api
+        source_type: marketplace
+        customer_segment: b2c_varejo
+        active: true
+      - product_id: rolinho_galvanizado_zincado_brilhante
+        query: rolinho galvanizado zincado brilhante
+        url_type: api_search
+        collection_method: mercado_livre_api
+        source_type: marketplace
+        customer_segment: b2c_varejo
+        active: true
+      - product_id: telha_termoacustica_sanduiche_trapezio
+        query: telha sanduiche trapezoidal eps
+        url_type: api_search
+        collection_method: mercado_livre_api
+        source_type: marketplace
+        customer_segment: b2c_varejo
+        active: true
+      - product_id: divisoria_gesso_drywall
+        query: placa drywall st 12,5mm 120x240
+        url_type: api_search
+        collection_method: mercado_livre_api
+        source_type: marketplace
+        customer_segment: b2c_varejo
+        active: true
+      - product_id: perfil_guia_drywall
+        query: perfil guia drywall 70mm 3m
         url_type: api_search
         collection_method: mercado_livre_api
         source_type: marketplace

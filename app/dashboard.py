@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from app.common import brl, load_all, setup_page
+from app.common import brl, freshness_status, load_all, setup_page
 
 import pandas as pd
 import plotly.express as px
@@ -10,6 +10,10 @@ from src.analytics.market_segments import B2B_SEGMENT, B2C_SEGMENT
 
 setup_page("Formare Price Intelligence")
 st.caption("Monitoramento etico de precos publicos, cotacoes manuais e CMV da Formare Metais.")
+
+if st.button("Atualizar dados exibidos"):
+    st.cache_data.clear()
+    st.rerun()
 
 observations, competitors, products, costs, alerts = load_all()
 
@@ -23,14 +27,29 @@ if observations.empty:
 
 today = pd.Timestamp.utcnow().date()
 today_count = int((observations["collected_at"].dt.date == today).sum())
-success = observations[observations["collection_status"] == "success"]
+# Rankings always use only the most recent observation for a supplier/product.
+# Historical rows remain available on the dedicated history page.
+current_observations = (
+    observations.sort_values("collected_at", ascending=False)
+    .groupby(["competitor_name", "product_id"], dropna=False, as_index=False)
+    .head(1)
+)
+success = current_observations[current_observations["collection_status"] == "success"]
 latest_at = observations["collected_at"].max()
+freshness, freshness_message = freshness_status(latest_at)
+
+if freshness in {"Critico", "Indisponivel"}:
+    st.error(f"Status dos dados: {freshness}. {freshness_message}")
+elif freshness in {"Atencao", "Desatualizado"}:
+    st.warning(f"Status dos dados: {freshness}. {freshness_message}")
+else:
+    st.success(f"Status dos dados: {freshness}. {freshness_message}")
 
 col1, col2, col3, col4 = st.columns(4)
 col1.metric("Ultima atualizacao", latest_at.tz_convert("America/Sao_Paulo").strftime("%d/%m %H:%M") if pd.notna(latest_at) else "-")
 col2.metric("Produtos", products["id"].nunique())
 col3.metric("Concorrentes", competitors["id"].nunique())
-col4.metric("Coletas hoje", today_count)
+col4.metric("Status dos dados", freshness)
 
 col5, col6, col7, col8 = st.columns(4)
 col5.metric("Precos com sucesso", len(success))

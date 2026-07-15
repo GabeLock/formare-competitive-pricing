@@ -13,7 +13,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--source", help="Run only one source by id or name.")
     parser.add_argument("--dry-run", action="store_true", help="Collect without writing to the database.")
     parser.add_argument("--update-all", action="store_true", help="Initialize DB and run all collectors.")
-    parser.add_argument("--scheduler", action="store_true", help="Run local APScheduler at 08:00 and 17:00 BRT.")
+    parser.add_argument(
+        "--scheduler",
+        action="store_true",
+        help="Run local APScheduler every 30 minutes from 08:07 to 18:37 BRT on weekdays.",
+    )
     parser.add_argument(
         "--allow-simulated-fallback",
         action="store_true",
@@ -42,4 +46,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
