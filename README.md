@@ -1,5 +1,10 @@
 # Formare Price Intelligence
 
+## Dashboard publicado
+
+Acesso do cliente: [formare-competitive-pricing.streamlit.app](https://formare-competitive-pricing.streamlit.app).
+O acesso utiliza a senha de cliente configurada nos segredos do Streamlit.
+
 Aplicacao local de inteligencia competitiva para a Formare Metais, focada em
 precos publicos, cotacoes manuais, CMV e posicionamento comercial nos produtos:
 
