@@ -1,0 +1,4 @@
+-- PostgreSQL deployment reference.
+-- Bootstrap the current schema with: python run.py --init-db
+-- SQLAlchemy creates the model schema and seeds sources from src/config.
+-- Store any future operational migrations in this directory before deployment.

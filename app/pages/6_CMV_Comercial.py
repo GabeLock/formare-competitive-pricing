@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from app.common import load_all, setup_page
+from app.common import load_all, require_admin_access, setup_page
 
 import pandas as pd
 import streamlit as st
@@ -12,6 +12,7 @@ from src.database.connection import SessionLocal
 from src.database.repository import save_manual_quote, upsert_formare_cost
 
 setup_page("CMV e Comercial")
+require_admin_access()
 observations, competitors, products, costs, alerts = load_all()
 
 st.subheader("Cadastro manual de custo e preco Formare")
@@ -78,7 +79,7 @@ with st.form("manual_quote"):
                 customer_segment,
                 quote_notes,
             )
-        st.success("Cotacao manual salva no SQLite.")
+        st.success("Cotacao manual salva no banco de dados.")
         st.cache_data.clear()
 
 st.subheader("Risco comercial - referencia competitiva B2B")

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
@@ -14,9 +15,46 @@ from src.config.settings import TIERS
 from src.database.repository import alerts_df, competitors_df, formare_costs_df, initialize_database, latest_observations, products_df
 
 
+def _configured_secret(name: str) -> str | None:
+    value = os.getenv(name)
+    if value:
+        return value
+    try:
+        return str(st.secrets[name]) if name in st.secrets else None
+    except Exception:
+        return None
+
+
+def require_access(secret_name: str, label: str) -> None:
+    expected = _configured_secret(secret_name)
+    if not expected:
+        if os.getenv("FORMARE_ENVIRONMENT") == "production":
+            st.error(f"Acesso bloqueado: configure o segredo {secret_name} no ambiente de publicacao.")
+            st.stop()
+        return
+    session_key = f"authenticated_{secret_name.lower()}"
+    if st.session_state.get(session_key):
+        return
+    st.info(f"Acesso {label} protegido.")
+    with st.form(f"login_{secret_name}"):
+        password = st.text_input("Senha", type="password")
+        submitted = st.form_submit_button("Entrar")
+    if submitted and password == expected:
+        st.session_state[session_key] = True
+        st.rerun()
+    elif submitted:
+        st.error("Senha incorreta.")
+    st.stop()
+
+
 def setup_page(title: str) -> None:
     st.set_page_config(page_title=title, layout="wide")
+    require_access("FORMARE_DASHBOARD_PASSWORD", "do cliente")
     st.title(title)
+
+
+def require_admin_access() -> None:
+    require_access("FORMARE_ADMIN_PASSWORD", "administrativo")
 
 
 @st.cache_data(ttl=300)

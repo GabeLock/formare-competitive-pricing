@@ -1,4 +1,4 @@
-# formare-price-intelligence
+# Formare Price Intelligence
 
 Aplicacao local de inteligencia competitiva para a Formare Metais, focada em
 precos publicos, cotacoes manuais, CMV e posicionamento comercial nos produtos:
@@ -29,27 +29,31 @@ referencia, nao como concorrentes diretos.
 ```text
 app/                         Dashboard Streamlit e paginas
 data/raw/                    Snapshots HTML locais, nao versionados
-data/database/prices.db       SQLite versionavel
+PostgreSQL/Supabase            Historico central usado pelo coletor e dashboard
 src/collectors/              Coletores eticos por fonte
 src/config/                  products.yaml e competitors.yaml
 src/database/                SQLAlchemy, schema e repositorio
 src/processing/              Parser, normalizacao, conversao e hash de item
 src/analytics/               Variacao, CMV, scoring e alertas
-src/scheduler/               Orquestracao e APScheduler local
+src/scheduler/               Orquestracao da coleta
 tests/                       Testes unitarios
 ```
 
-## Instalar e rodar
+## Instalar e rodar localmente
 
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 python run.py --init-db
-python run.py --collect
 streamlit run app/dashboard.py
-pytest
+python -m pytest -q tests
 ```
+
+Sem `DATABASE_URL`, o projeto usa SQLite local apenas para desenvolvimento.
+Para a operacao publicada, configure `DATABASE_URL` com PostgreSQL/Supabase;
+veja [DEPLOYMENT.md](DEPLOYMENT.md).
 
 Comandos uteis:
 
@@ -125,11 +129,17 @@ Classificacao: 0-25 Baixo, 26-50 Moderado, 51-75 Alto, 76-100 Critico.
 Precos `b2c_varejo` sao exibidos como teto varejo separado para leitura comercial,
 sem compor o menor preco competitivo nem a media B2B.
 
-## GitHub Actions
+## GitHub Actions e deploy
 
-`.github/workflows/update_prices.yml` roda as 08:00 e 17:00 de Brasilia
-(`0 11,20 * * *` UTC), aceita `workflow_dispatch`, usa `concurrency`, salva logs
-como artefato e comita `data/database/prices.db` quando houver mudanca.
+`.github/workflows/update_prices.yml` tem alvo de execucao a cada 30 minutos
+(`7,37 * * * *`), aceita `workflow_dispatch`, usa `concurrency` e salva logs
+como artefato. Ele grava diretamente no banco hospedado por meio do segredo
+`DATABASE_URL`; nao comita dados de runtime no Git.
+
+O dashboard Streamlit e a coleta usam o mesmo PostgreSQL. A configuracao de
+Supabase, GitHub Actions, senha do cliente e Streamlit Community Cloud esta em
+[DEPLOYMENT.md](DEPLOYMENT.md). GitHub Actions e adequado para MVP, mas nao
+garante inicio exatamente no minuto programado.
 
 ## Manutencao
 
@@ -140,8 +150,11 @@ Para adicionar fonte:
 3. Use `collection_method: quote_probe`, `html` ou `mercado_livre_api`.
 4. Se houver parser especifico, crie um collector em `src/collectors/` e registre em `src/scheduler/run_collection.py`.
 
-## Escalabilidade
+## Estrutura e escalabilidade
 
-Snapshots HTML nao vao para o Git. Se o SQLite crescer demais, exporte
-observacoes antigas para CSV compactado em `data/processed/archive/` e mantenha
-o banco quente enxuto. Para uso maior, migrar para Postgres, Turso ou Supabase.
+O repositorio segue uma arquitetura em camadas: Streamlit em `app/`, dominio e
+infraestrutura em `src/`, testes isolados em `tests/`, e analises exploratorias
+em `notebooks/`. Os detalhes e convencoes estao em [ARCHITECTURE.md](ARCHITECTURE.md).
+
+Snapshots HTML nao vao para o Git. Para SLA contratual de atualizacao, migre o
+agendador para Cloud Scheduler + Cloud Run Job, mantendo o PostgreSQL gerenciado.

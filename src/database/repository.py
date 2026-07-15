@@ -11,7 +11,7 @@ from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from src.config.settings import COMPETITORS_CONFIG, DB_PATH, PRODUCTS_CONFIG
-from src.database.connection import SessionLocal, init_db
+from src.database.connection import SessionLocal, engine, init_db
 from src.database.models import Alert, Competitor, FormareCost, MonitoredUrl, PriceObservation, Product
 from src.processing.price_parser import PriceObservationIn
 
@@ -144,7 +144,7 @@ def save_observations(session: Session, observations: Iterable[PriceObservationI
 
 def read_sql(query: str) -> pd.DataFrame:
     initialize_database()
-    return pd.read_sql(query, f"sqlite:///{DB_PATH}")
+    return pd.read_sql(query, engine)
 
 
 def latest_observations() -> pd.DataFrame:
