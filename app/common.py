@@ -20,6 +20,8 @@ def _configured_secret(name: str) -> str | None:
     value = os.getenv(name)
     if value:
         return value
+    if not (ROOT / ".streamlit" / "secrets.toml").exists():
+        return None
     try:
         return str(st.secrets[name]) if name in st.secrets else None
     except Exception:

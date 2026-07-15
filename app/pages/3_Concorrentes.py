@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from app.common import load_all, setup_page
 
 import streamlit as st
@@ -18,4 +25,3 @@ if not observations.empty:
     summary = summary.merge(counts, left_on="id", right_index=True, how="left")
 
 st.dataframe(summary, use_container_width=True, hide_index=True)
-
