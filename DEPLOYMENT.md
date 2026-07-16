@@ -6,10 +6,11 @@ executa somente a coleta; o Streamlit faz somente leitura e nunca dispara scrapi
 ## 1. Banco Supabase
 
 1. Crie um projeto Supabase na regiao mais proxima da operacao.
-2. Em **Connect**, copie a connection string do pooler (porta 6543) e acrescente
-   `?sslmode=require` se necessario. Nao use a URL direta (porta 5432) no
-   Streamlit Community Cloud: ela pode depender de IPv6 e falhar apos o app sair
-   do modo de suspensao.
+2. Em **Connect**, copie a connection string completa de um pooler e acrescente
+   `?sslmode=require` se necessario. Para o Streamlit Community Cloud, o
+   **Session Pooler** (host `*.pooler.supabase.com`, porta `5432`) e adequado
+   para a rede IPv4. O **Transaction Pooler** usa a porta `6543`. Nao altere
+   somente a porta: copie a URI inteira exibida pelo Supabase para o modo escolhido.
 3. No terminal, defina `DATABASE_URL` e execute `python run.py --init-db` uma vez.
    Isso cria as tabelas e cadastra produtos e fontes.
 4. Em GitHub > Settings > Secrets and variables > Actions, crie o segredo
