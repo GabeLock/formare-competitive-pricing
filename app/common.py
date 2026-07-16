@@ -7,13 +7,15 @@ from pathlib import Path
 
 import pandas as pd
 import streamlit as st
+from sqlalchemy.exc import SQLAlchemyError
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from src.config.settings import TIERS
-from src.database.repository import alerts_df, competitors_df, formare_costs_df, initialize_database, latest_observations, products_df
+from src.database.connection import DatabaseUnavailableError, ensure_database_connection
+from src.database.repository import alerts_df, competitors_df, formare_costs_df, latest_observations, products_df
 
 
 def _configured_secret(name: str) -> str | None:
@@ -62,12 +64,19 @@ def require_admin_access() -> None:
 
 @st.cache_data(ttl=300)
 def load_all() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    initialize_database()
-    observations = latest_observations()
-    competitors = competitors_df()
-    products = products_df()
-    costs = formare_costs_df()
-    alerts = alerts_df()
+    try:
+        # The dashboard is read-only. Schema creation and reference-data seeding
+        # happen in the deployment/collector job, not on every page visit.
+        ensure_database_connection()
+        observations = latest_observations()
+        competitors = competitors_df()
+        products = products_df()
+        costs = formare_costs_df()
+        alerts = alerts_df()
+    except (DatabaseUnavailableError, SQLAlchemyError):
+        st.error("O banco de dados esta temporariamente indisponivel.")
+        st.info("Atualize a pagina em alguns instantes. Se persistir, a configuracao do banco sera verificada pela equipe responsavel.")
+        st.stop()
     if not observations.empty:
         observations["collected_at"] = pd.to_datetime(observations["collected_at"], utc=True, errors="coerce")
         observations = observations.merge(

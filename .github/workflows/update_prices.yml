@@ -32,6 +32,9 @@ jobs:
 
       - name: Initialize database
         run: python run.py --init-db
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          FORMARE_ENVIRONMENT: production
 
       - name: Collect prices
         run: python run.py --collect

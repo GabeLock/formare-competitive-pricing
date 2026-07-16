@@ -7,7 +7,9 @@ executa somente a coleta; o Streamlit faz somente leitura e nunca dispara scrapi
 
 1. Crie um projeto Supabase na regiao mais proxima da operacao.
 2. Em **Connect**, copie a connection string do pooler (porta 6543) e acrescente
-   `?sslmode=require` se necessario.
+   `?sslmode=require` se necessario. Nao use a URL direta (porta 5432) no
+   Streamlit Community Cloud: ela pode depender de IPv6 e falhar apos o app sair
+   do modo de suspensao.
 3. No terminal, defina `DATABASE_URL` e execute `python run.py --init-db` uma vez.
    Isso cria as tabelas e cadastra produtos e fontes.
 4. Em GitHub > Settings > Secrets and variables > Actions, crie o segredo
@@ -41,6 +43,11 @@ FORMARE_ADMIN_PASSWORD = "senha-exclusiva-da-Formare"
 ```
 
 4. Clique em Deploy. A plataforma exibira a URL final para ser enviada ao cliente.
+
+O mesmo valor de `DATABASE_URL` deve estar tanto nos segredos do Streamlit quanto
+nos segredos do GitHub Actions. O dashboard apenas le o banco; a criacao de
+tabelas e a carga dos dados de referencia acontecem na etapa **Initialize database**
+do workflow. Isso evita gravacoes e picos de conexao em cada visita ao dashboard.
 
 O link nao pode ser criado pelo codigo: ele depende da autenticacao da conta
 Streamlit e dos segredos do banco, que nao devem entrar no repositorio.

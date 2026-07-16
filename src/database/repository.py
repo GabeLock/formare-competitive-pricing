@@ -143,7 +143,6 @@ def save_observations(session: Session, observations: Iterable[PriceObservationI
 
 
 def read_sql(query: str) -> pd.DataFrame:
-    initialize_database()
     return pd.read_sql(query, engine)
 
 
